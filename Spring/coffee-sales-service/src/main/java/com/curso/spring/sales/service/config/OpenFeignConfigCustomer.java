@@ -7,13 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import feign.auth.BasicAuthRequestInterceptor;
 
 @Configuration
-public class OpenFeignConfig {
-	
-	@Value("${stock.service.username}")
-	private String userName;
-	
-	@Value("${stock.service.password}")
-	private String password;
+public class OpenFeignConfigCustomer {
 	
 	@Value("${client.service.usernameCreate}")
 	private String userNameClientCreate;
@@ -22,12 +16,7 @@ public class OpenFeignConfig {
 	private String passwordClientCreate;
 
 	@Bean
-	public BasicAuthRequestInterceptor basicAuthRequestInterceptorStock() {
-		return new BasicAuthRequestInterceptor(userName, password);
-	}
-	
-	@Bean
-	public BasicAuthRequestInterceptor basicAuthRequestInterceptorCustomer() {
+	public BasicAuthRequestInterceptor basicAuthRequestInterceptor() {
 		return new BasicAuthRequestInterceptor(userNameClientCreate, passwordClientCreate);
 	}
 }

@@ -30,9 +30,9 @@ public class SalesController {
 	public ResponseEntity<Sale> createSale(@RequestBody Sale sale) {
 		//TODO. Pendiente x realizar implementación
 		try {
-			iSaleService.tryToCreateASale(sale);
+//			iSaleService.tryToCreateASale(sale);
 //			iSaleService.tryToCreateASaleUsingWebClient(sale);
-//			iSaleService.tryToCreateASaleUsingOpenFeign(sale);
+			iSaleService.tryToCreateASaleUsingOpenFeign(sale);
 
 		} catch (AmountOfProductNotAvailableException e) {
 			return new ResponseEntity<Sale>(sale, HttpStatus.NOT_ACCEPTABLE);

@@ -16,7 +16,7 @@ public class Customer {
 
 	@Id
 	@Column(name = "DOC_NUMBER")
-	private Short docNumer;
+	private Short docNumber;
 	@Column(name = "DOC_TYPE")
 	private DocType docType;
 	@Column(name = "FIRST_NAME")

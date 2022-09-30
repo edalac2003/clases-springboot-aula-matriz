@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.curso.spring.entities.lib.Customer;
+import com.curso.spring.sales.service.config.OpenFeignConfigCustomer;
 
-@FeignClient(name = "customerClient", url = "${client.service.base.url}")
+@FeignClient(name = "customerClient", url = "${client.service.base.url}", configuration = OpenFeignConfigCustomer.class)
 public interface CustomerClient {
 
 	@GetMapping("/client/findById/{docNumber}")

@@ -2,8 +2,6 @@ package com.curso.spring.client.service.controller;
 
 import java.util.List;
 
-import javax.annotation.security.RolesAllowed;
-
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,7 +20,6 @@ public class ClientController {
 
 	@PostMapping("/create")
 	public Customer create(@RequestBody Customer customer) {
-		System.out.println("Se creó el nuevo cliente. " + customer);
 		return customer;
 	}
 	
@@ -37,14 +34,13 @@ public class ClientController {
 	}
 	
 	@GetMapping("/findById/{docNumber}")
-	@RolesAllowed(value = "")
 	public Customer findById(@PathVariable short docNumber) {
 		Customer customer = new Customer();
-		customer.setDocNumer((short)12345);
+		customer.setDocNumber((short)12345);
 		customer.setDocType(DocType.CC);
 		customer.setFirstName("Pepito");
 		
-		return (customer.getDocNumer() == docNumber ? customer : null);
+		return (customer.getDocNumber() == docNumber ? customer : null);
 	}
 	
 	@DeleteMapping("/deleteCustomer/{docNumber}")

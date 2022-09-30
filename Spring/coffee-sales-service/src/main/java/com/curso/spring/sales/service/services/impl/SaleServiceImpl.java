@@ -6,6 +6,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -75,11 +76,14 @@ public class SaleServiceImpl implements ISaleService {
 		}
 		
 		//Validacion del Cliente
-		ResponseEntity<Customer> customerSale = restTemplate.exchange(clientServiceBaseUrl + "/client/findById/{docNumber}", HttpMethod.GET, new HttpEntity<String>(createHeader(userNameClientQuery, passwordClientQuery)), Customer.class, sale.getCustomer().getDocNumer());
+		ResponseEntity<Customer> customerSale = restTemplate.exchange(clientServiceBaseUrl + "/client/findById/{docNumber}", HttpMethod.GET, new HttpEntity<String>(createHeader(userNameClientQuery, passwordClientQuery)), Customer.class, sale.getCustomer().getDocNumber());
 		if(customerSale.getBody() == null) {
 			//Si el cliente no existe, se crea
 			System.out.println("El Cliente no Existe");
-			customerSale = restTemplate.exchange(clientServiceBaseUrl + "/client/create", HttpMethod.POST, new HttpEntity<String>(createHeader(userNameClientCreate, passwordClientCreate)), Customer.class, sale.getCustomer());
+			customerSale = restTemplate.exchange(clientServiceBaseUrl + "/client/create", 
+					HttpMethod.POST, 
+					new HttpEntity<Customer>(sale.getCustomer(), createHeader(userNameClientCreate, passwordClientCreate)), 
+					Customer.class);
 						
 			System.out.println("Se ha creado el usuario " + customerSale.getBody().getFirstName());
 		}
@@ -96,7 +100,7 @@ public class SaleServiceImpl implements ISaleService {
 //		httpHeaders.add("Authorization", authHeader);
 		
 		httpHeaders.setBasicAuth(userName, password);
-		
+		httpHeaders.setContentType(MediaType.APPLICATION_JSON);
 		return httpHeaders;
 	}
 
@@ -112,12 +116,12 @@ public class SaleServiceImpl implements ISaleService {
 		
 		
 		//Validacion del Cliente
-		ResponseEntity<Customer> customerSale = customerClient.getCustomerById(sale.getCustomer().getDocNumer());
+		ResponseEntity<Customer> customerSale = customerClient.getCustomerById(sale.getCustomer().getDocNumber());
 		if(customerSale.getBody() == null) {
 			//Si el cliente no existe, se crea
 			System.out.println("El Cliente no Existe");
-			customerClient.createCustomer(sale.getCustomer());
-			
+			customerSale = customerClient.createCustomer(sale.getCustomer());
+			System.out.println("Nuevo Cliente Generado.  " + customerSale.getBody().getFirstName());
 		}
 		
 		System.out.println("Venta realizada con Exito. " + sale);
@@ -141,7 +145,7 @@ public class SaleServiceImpl implements ISaleService {
 		}
 		
 		//Validacion del Cliente
-		ResponseEntity<Customer> customerSale = customerClient.getCustomerById(sale.getCustomer().getDocNumer());
+		ResponseEntity<Customer> customerSale = customerClient.getCustomerById(sale.getCustomer().getDocNumber());
 		if(customerSale.getBody() == null) {
 			//Si el cliente no existe, se crea
 			System.out.println("El Cliente no Existe");
